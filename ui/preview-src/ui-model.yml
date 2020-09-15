@@ -135,6 +135,9 @@ page:
     - content: Developer Template
       url: developer.html
       urlType: internal
+    - content: Deprecated
+      url: deprecated.html
+      urlType: internal
 
 asciidoc:
   attributes:

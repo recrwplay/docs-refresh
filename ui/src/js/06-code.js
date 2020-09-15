@@ -113,6 +113,11 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.highlight')
     .forEach(addCodeHeader)
 
+  if (storageAvailable('sessionStorage')) {
+    var sessionStorage = window.sessionStorage
+    // sessionStorage.setItem('code_example_language', 'java')
+  }
+  var storedLanguage = getCodeExampleLanguage()
 
   var targetActive = 'tabbed-target--active'
   var tabActive = 'tabbed-tab--active'
@@ -120,22 +125,33 @@ document.addEventListener('DOMContentLoaded', function () {
   var switchTab = function(e) {
     var tab = e.target
     var title = tab.innerHTML
+
     // Switch Tabs
-    var targetTabs = document.querySelectorAll('.tabbed-target[data-title="'+ title +'"]')
+    var targetTabs = document.querySelectorAll('.tabbed-target[data-lang="'+ title +'"]')
     targetTabs.forEach(function(target) {
+      
+      // remove all active classes
       target.parentElement.querySelectorAll('.'+ targetActive)
         .forEach(function(el) {
           el.classList.remove(targetActive)
         })
 
-        target.classList.add(targetActive)
+    })
 
+    // add active class for any matching code
+    // where matching has the selected language as data-lang
+    targetTabs.forEach(function(target) {
+        target.classList.add(targetActive)
         target.parentElement.parentElement.querySelectorAll('.'+ tabActive)
           .forEach(function(el) { el.classList.remove(tabActive) })
 
-        target.parentElement.parentElement.querySelectorAll('.tabbed-tab[data-title="'+ title +'"]')
+        target.parentElement.parentElement.querySelectorAll('.tabbed-tab[data-lang="'+ title +'"]')
           .forEach(function(el) { el.classList.add(tabActive) })
       })
+
+      if (storageAvailable('sessionStorage')) {
+        sessionStorage.setItem('code_example_language', title)
+      }
 
       var offset = document.querySelector('.navbar').offsetHeight + document.querySelector('.toolbar').offsetHeight + 20
 
@@ -151,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Tabbed code
-  Array.from(document.querySelectorAll('.tabs'))
+  Array.from(document.querySelectorAll('.tabs, .tabbed-example'))
     .forEach(function(tab) {
       var originalTab = tab
       var parent = tab.parentElement
@@ -185,34 +201,82 @@ document.addEventListener('DOMContentLoaded', function () {
       parent.insertBefore(tabbedParent, originalTab)
 
       // Build up tabs
+      var langList = []
       var tabs = elements.map(function(element) {
         var title = element.querySelector('.title')
-        var text = title ? title.innerHTML : element.querySelector('.code-language').innerHTML
+        var tabText = element.querySelector('.code-language').innerHTML
+        
+        var text = title ? title.innerHTML : tabText
 
-        var tabElement = createElement('li', 'tabbed-tab', [ document.createTextNode(text) ])
+        var tabElement = createElement('li', 'tabbed-tab', [ document.createTextNode(tabText) ])
+
         element.dataset.title = text
+        element.dataset.lang = tabText
         tabElement.dataset.title = text
+        tabElement.dataset.lang = tabText
 
+        if (tabText == storedLanguage) tabElement.classList.add(tabActive)
         tabElement.addEventListener('click', switchTab)
 
+          
+        // don't want more than one tab for the same lang
+        if (!langList.includes(tabText)) {
+          langList.push(tabText)
+        } else {
+          tabElement.classList.add('tabbed-tab--dupe')
+          tabElement.classList.remove(tabActive)
+        }
         return tabElement
+        
       })
 
-      tabs[0].classList.add('tabbed-tab--active')
-
-      tabbedParent.insertBefore( createElement('ul', 'tabbed-tabs', tabs), tabbedContainer )
-
       // Remove elements from parent and add to tab container
+      var activeAdded = false
       elements.forEach(function(element) {
         parent.removeChild(element)
         tabbedContainer.appendChild(element)
-
         element.classList.add('tabbed-target')
+        if (element.getAttribute('data-lang') == storedLanguage) {
+          element.classList.add('tabbed-target--active')
+          // console.log(element.parentElement)
+          activeAdded = true
+        }
       })
+      
+      if (!activeAdded) {
 
-      elements[0].classList.add('tabbed-target--active')
+        // get the data-lang of the first tab
+        var setLang = elements[0].getAttribute('data-lang')
+        // add active to matching tabs and targets
+        var elIndex = 0
+        elements.forEach(function(element) {
+          if (element.getAttribute('data-lang') == setLang) {
+            element.classList.add('tabbed-target--active')
+            tabs[elIndex].classList.add('tabbed-tab--active')
+          }
+          elIndex++
+
+        })
+      }
+      
+      tabbedParent.insertBefore( createElement('ul', 'tabbed-tabs', tabs), tabbedContainer )
+      
     })
 
-
-
+    function storageAvailable (type) {
+      try {
+        var storage = window[type]
+        var x = '__storage_test__'
+        storage.setItem(x, x)
+        storage.removeItem(x)
+        return true
+      } catch (e) {
+        return false
+      }
+    }
+  
+    function getCodeExampleLanguage () {
+      return storageAvailable('sessionStorage') ? sessionStorage.getItem('code_example_language') || false : false
+    }
+  
 })

@@ -26,4 +26,6 @@
 @import "search.css";
 @import "cookies.css";
 
+@import "neo4j-docs.css";
+
 @import "../../node_modules/font-awesome/css/font-awesome.css";

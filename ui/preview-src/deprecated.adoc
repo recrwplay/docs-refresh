@@ -1,0 +1,160 @@
+[role=deprecated]
+= Deprecated content
+:page-theme: docs
+:page-deprecated: true
+
+== To be deprecated
+
+Lorem ipsum
+
+[WARNING]
+====
+This is some deprecated function
+====
+
+This is not
+
+[role=deprecated]
+== This is the title for deprecated content
+
+This content has been deprecated. Darn it.
+
+== Tabbed content
+
+[.tabbed-example]
+.Code title
+[source,cypher]
+----
+CALL n10s.rdf.preview.fetch(
+  'https://raw.githubusercontent.com/neo4j-labs/neosemantics/3.5/docs/rdf/nsmntx.ttl',
+  'Turtle'
+)
+----
+
+[source,js]
+CALL n10s.rdf.stream.fetch(
+  'https://raw.githubusercontent.com/neo4j-labs/neosemantics/3.5/docs/rdf/nsmntx.ttl',
+  'Turtle'
+)
+
+[source,cypher]
+----
+CALL n10s.rdf.preview.fetch(
+  'https://raw.githubusercontent.com/neo4j-labs/neosemantics/3.5/docs/rdf/nsmntx.ttl',
+  'Turtle'
+)
+----
+
+== More
+
+This is an example of code samples for different languages.
+
+[.tabs]
+.Consuming results
+[source, csharp]
+----
+using (var session = _driver.Session(SessionConfigBuilder.ForDatabase("examples")))
+{
+    session.Run("CREATE (a:Greeting {message: 'Hello, Example-Database'}) RETURN a").Consume();
+}
+
+void SessionConfig(SessionConfigBuilder configBuilder) =>
+    configBuilder.WithDatabase("examples")
+        .WithDefaultAccessMode(AccessMode.Read)
+        .Build();
+
+using (var session = _driver.Session(SessionConfig))
+{
+    var result = session.Run("MATCH (a:Greeting) RETURN a.message as msg");
+    var msg = result.Single()[0].As<string>();
+    Console.WriteLine(msg);
+}
+----
+
+[source, java]
+----
+public Flux<ResultSummary> printAllProducts()
+{
+    String query = "MATCH (p:Product) WHERE p.id = $id RETURN p.title";
+    Map<String,Object> parameters = Collections.singletonMap( "id", 0 );
+
+    return Flux.usingWhen( Mono.fromSupplier( driver::rxSession ),
+            session -> session.readTransaction( tx -> {
+                RxResult result = tx.run( query, parameters );
+                return Flux.from( result.records() )
+                        .doOnNext( record -> System.out.println( record.get( 0 ).asString() ) ).then( Mono.from( result.consume() ) );
+            }
+         ), RxSession::close );
+}
+----
+
+[source, javascript]
+----
+const session = driver.rxSession()
+const result = session.readTransaction(tx =>
+  tx
+    .run('MATCH (p:Product) WHERE p.id = $id RETURN p.title', { id: 0 })
+    .records()
+    .pipe(
+      map(r => r.get(0)),
+      materialize(),
+      toArray()
+    )
+)
+----
+
+Here is more code, it should be in a different set of tabs
+
+[.tabs]
+
+[source, csharp]
+----
+using (var session = _driver.Session(SessionConfigBuilder.ForDatabase("examples")))
+{
+    session.Run("CREATE (a:Greeting {message: 'Hello, Example-Database'}) RETURN a").Consume();
+}
+
+void SessionConfig(SessionConfigBuilder configBuilder) =>
+    configBuilder.WithDatabase("examples")
+        .WithDefaultAccessMode(AccessMode.Read)
+        .Build();
+
+using (var session = _driver.Session(SessionConfig))
+{
+    var result = session.Run("MATCH (a:Greeting) RETURN a.message as msg");
+    var msg = result.Single()[0].As<string>();
+    Console.WriteLine(msg);
+}
+----
+
+[source, java]
+----
+public Fluxdd<ResultSummary> printAllProducts()
+{
+    String query = "MATCH (p:Product) WHERE p.id = $id RETURN p.title";
+    Map<String,Object> parameters = Collections.singletonMap( "id", 0 );
+
+    return Flux.usingWhen( Mono.fromSupplier( driver::rxSession ),
+            session -> session.readTransaction( tx -> {
+                RxResult result = tx.run( query, parameters );
+                return Flux.from( result.records() )
+                        .doOnNext( record -> System.out.println( record.get( 0 ).asString() ) ).then( Mono.from( result.consume() ) );
+            }
+         ), RxSession::close );
+}
+----
+
+[source, javascript]
+----
+const session = driver.rxSession()
+const result = session.readTransaction(tx =>
+  tx
+    .run('MATCH (p:Product) WHERE p.id = $id RETURN p.title', { id: 0 })
+    .records()
+    .pipe(
+      map(r => r.get(0)),
+      materialize(),
+      toArray()
+    )
+)
+----
