@@ -146,18 +146,22 @@ body {
   margin-right: .5rem;
 }
 
-.doc a {
+.doc a,
+.doc p a code {
   color: var(--link-font-color);
 }
 
-.doc a:hover {
+.doc a:hover,
+.doc p a:hover code {
   color: var(--link_hover-font-color);
 }
-.doc a:visited {
+.doc a:visited
+.doc p a:visited code {
   color: var(--link_visited-font-color);
 }
 
-.doc a.unresolved {
+.doc a.unresolved
+.doc p a.unresolved code {
   color: var(--link_unresolved-font-color);
 }
 
