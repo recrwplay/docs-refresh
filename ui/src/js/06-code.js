@@ -32,45 +32,56 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   var addCodeHeader = function (pre) {
+    var dotContent = pre.parentElement
+    var listingBlock = dotContent.parentElement
+
+    if (listingBlock.classList.contains('noheader')) return
+
+    var addCopyButton = !listingBlock.classList.contains('nocopy')
+    var addPlayButton = !listingBlock.classList.contains('noplay')
+
     var block = pre.querySelector('code')
     var div = pre.parentNode
 
     var code = block.innerHTML
-    var language = block.hasAttribute('class') && block.getAttribute('class').match(/language-([a-z0-9-])+/)[0].replace('language-', '')
+    var language = block.hasAttribute('class') &&
+      block.getAttribute('class').match(/language-([a-z0-9-])+/i)[0].replace('language-', '')
 
-    if ( ignore.indexOf(language) > -1 ) return;
+    if (language && ignore.indexOf(language.toLowerCase()) > -1) return
 
     var languageDiv = document.createElement('div')
     languageDiv.className = 'code-language'
 
-    if ( language ) {
+    if (language) {
       languageDiv.innerHTML = language
     }
+    var children = [languageDiv]
 
+    if (addCopyButton) {
+      var copyButton = createElement('button', 'btn btn-copy', [document.createTextNode('Copy to Clipboard')])
+      copyButton.addEventListener('click', function (e) {
+        e.preventDefault()
+        copyToClipboard(code)
 
-    var copyButton = createElement('button', 'btn btn-copy', [document.createTextNode('Copy to Clipboard')])
-    copyButton.addEventListener('click', function (e) {
-      e.preventDefault()
-      copyToClipboard(code)
+        var button = e.target
+        var text = button.innerHTML
+        var width = button.clientWidth
 
-      var button = e.target
-      var text = button.innerHTML
-      var width = button.clientWidth
+        button.style.width = width + 'px'
+        button.classList.add('btn-success')
+        button.innerHTML = copiedText
 
-      button.style.width = width + 'px'
-      button.classList.add('btn-success')
-      button.innerHTML = copiedText
+        setTimeout(function () {
+          button.innerHTML = text
+          button.classList.remove('btn-success')
+        }, 1000)
+      })
 
-      setTimeout(function() {
-        button.innerHTML = text
-        button.classList.remove('btn-success')
-      }, 1000)
-    })
+      children.push(copyButton)
+    }
 
-    var children = [languageDiv, copyButton]
-
-    if (language === "cypher") {
-      var runButton = createElement('button', 'btn btn-run btn-primary', [document.createTextNode('Run in Browser')])
+    if (language === 'cypher' && addPlayButton) {
+      var runButton = createElement('button', 'btn btn-run btn-primary', [document.createTextNode('Run in Neo4j Browser')])
       runButton.addEventListener('click', function (e) {
         e.preventDefault()
 
@@ -81,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     var originalTitle = div.parentNode.querySelector('.title')
-    if ( originalTitle ) {
+    if (originalTitle) {
       var titleDiv = document.createElement('div')
       titleDiv.className = 'code-title'
       titleDiv.innerHTML = originalTitle.innerHTML
@@ -90,7 +101,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
       children.unshift(titleDiv)
     }
-
 
     var header = createElement('div', 'code-header', children)
 

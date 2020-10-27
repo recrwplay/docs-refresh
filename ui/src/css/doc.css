@@ -606,6 +606,7 @@ body {
 .doc .olist .listingblock,
 .doc .admonitionblock .listingblock {
   padding: 0;
+  margin-top:0.25rem;
 }
 
 .doc .admonitionblock .title,
