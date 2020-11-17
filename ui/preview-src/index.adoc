@@ -49,7 +49,80 @@ Author Name
 </div>
 +++
 
-== real version from drivers manual
+== real versions from drivers manual
+
+== Configuration
+
+`ConnectionAcquisitionTimeout`::
+
+The maximum amount of time a session will wait when requesting a connection from the connection pool.
+For connection pools where all connections are currently being used and the `MaxConnectionPoolSize` limit has been reached, a session will wait this duration for a connection to be made available.
+Since the process of acquiring a connection may involve creating a new connection, *_ensure that the value of this configuration is higher than the configured_* `ConnectionTimeout`.
++
+Setting a low value will allow for transactions to *_fail fast_* when all connections in the pool have been acquired by other transactions.
+Setting a higher value will result in these transactions being queued, increasing the chances of eventually acquiring a connection at the cost of longer time to receive feedback on failure.
+Finding an optimal value may require an element of experimentation, taking into consideration the expected levels of parallelism within your application as well as the `MaxConnectionPoolSize`.
++
+*Default:* 60 seconds
+
+[.tabbed-example]
+.Configure connection pool
+====
+[.include-with-dotnet]
+======
+[source, csharp, indent=0]
+----
+include::{dotnet-examples}/Examples.cs[tags=config-connection-pool]
+----
+// .Import connection pool configuration
+// [source, csharp, indent=0]
+// ----
+// include::{dotnet-examples}/Examples.cs[tags=config-connection-pool-import]
+// ----
+======
+
+
+[.include-with-java]
+======
+.Import connection pool configuration
+[source, java, indent=0]
+----
+include::{java-examples}/ConfigConnectionPoolExample.java[tags=config-connection-pool-import]
+----
+
+[source, java, indent=0]
+----
+include::{java-examples}/ConfigConnectionPoolExample.java[tags=config-connection-pool]
+----
+======
+
+[.include-with-javascript]
+======
+[source, javascript, indent=0]
+----
+include::{javascript-examples}/examples.test.js[tags=config-connection-pool]
+----
+
+// .Import connection pool configuration
+// [source, javascript, indent=0]
+// ----
+// include::{javascript-examples}/examples.test.js[tags=config-connection-pool-import]
+// ----
+======
+
+[.include-with-python]
+======
+[source, python, indent=0]
+----
+include::{python-examples}/test_config_connection_pool_example.py[tags=config-connection-pool-import]
+----
+
+[source, python, indent=0]
+----
+include::{python-examples}/test_config_connection_pool_example.py[tags=config-connection-pool]
+----
+======
+====
 
 
 [.tabbed-example]

@@ -2,6 +2,8 @@
 {{> toolbar}}
   <div class="content">
 {{> article}}
+{{#unless page.attributes.hide-toc }}
 {{> toc}}
+{{/unless}}
   </div>
 </main>

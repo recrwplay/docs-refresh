@@ -1,3 +1,7 @@
+.doc .paragraph .title {
+  font-weight: var(--body-font-weight-bold);
+}
+
 .doc.deprecated::before,
 .doc.enterprise-edition::before,
 .doc.fabric::before {
@@ -41,22 +45,31 @@ section.deprecated .title::after {
   margin-left: 10px;
 }
 
-.deprecated h2:after,
-.deprecated h3:after,
-.deprecated h4:after,
-.enterprise-edition h2:after,
-.enterprise-edition h3:after,
-.enterprise-edition h4:after,
-.fabric h2:after,
-.fabric h3:after,
-.fabric h4:after,
+.doc.deprecated h2:after,
+.doc.deprecated h3:after,
+.doc.deprecated h4:after,
+div.deprecated h2:after,
+div.deprecated h3:after,
+div.deprecated h4:after,
+.doc.deprecated dt:after,
 p.deprecated::before,
 section.deprecated .title::after,
 table span.deprecated::after,
+section.enterprise-edition .title::after,
 .doc.enterprise-edition h1::after,
+div.enterprise-edition h2:after,
+div.enterprise-edition h3:after,
+div.enterprise-edition h4:after,
 p.enterprise-edition::before,
 table span.enterprise-edition::after,
 .doc.fabric h1::after,
+.doc.fabric h2:after,
+.doc.fabric h3:after,
+.doc.fabric h4:after,
+div.fabric h2:after,
+div.fabric h3:after,
+div.fabric h4:after,
+section.fabric .title::after,
 p.fabric::before,
 table span.fabric::after {
   text-align: center;
@@ -73,9 +86,13 @@ table span.fabric::after {
   margin-left: 8px;
 }
 
-.deprecated h2:after,
-.deprecated h3:after,
-.deprecated h4:after,
+.doc.deprecated h2:after,
+.doc.deprecated h3:after,
+.doc.deprecated h4:after,
+div.deprecated h2:after,
+div.deprecated h3:after,
+div.deprecated h4:after,
+.deprecated dt:after,
 p.deprecated::before,
 section.deprecated .title::after,
 table span.deprecated::after {
@@ -98,6 +115,9 @@ table span.enterprise-edition::after {
 
 section.fabric .title::after,
 .doc.fabric h1::after,
+.doc.fabric h2:after,
+.doc.fabric h3:after,
+.doc.fabric h4:after,
 div.fabric h2::after,
 div.fabric h3::after,
 div.fabric h4::after,
@@ -141,4 +161,18 @@ table span.fabric::after {
 
 .doc pre {
   font-size: calc(14 / var(--rem-base) * 1rem);
+}
+
+.doc .paragraph.statsonlyqueryresult {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: calc(14 / var(--rem-base) * 1rem);
+  background-color: var(--colour-grey-200);
+  margin: 0px;
+  margin-top: -1.5rem;
+  margin-right: 30%;
+  margin-bottom: 1.5rem;
+  margin-left: 2rem;
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+  padding-left: 1.5rem;
 }

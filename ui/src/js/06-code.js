@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
     languageDiv.className = 'code-language'
 
     if (language) {
-      languageDiv.innerHTML = language
+      languageDiv.innerHTML = language.replace('csharp','C#')
     }
     var children = [languageDiv]
 
@@ -179,7 +179,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // Tabbed code
   Array.from(document.querySelectorAll('.tabs, .tabbed-example'))
     .forEach(function(tab) {
-      console.log(tab)
       var tabsTitle = tab.querySelector('.title')
       var originalTab = tab
       var parent = tab.parentElement
@@ -205,8 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // Loop through the next sibling until it doesn't contain a <code> tag
       while (tab) {
         var nextTab = tab.nextElementSibling
-
-        if ( nextTab && nextTab.querySelector('code') ) {
+        if ( nextTab && nextTab.querySelector('.code-language') ) {
           elements.push(nextTab)
           tab = nextTab
         }
@@ -231,11 +229,16 @@ document.addEventListener('DOMContentLoaded', function () {
       // Build up tabs
       var langList = []
       var tabs = elements.map(function(element) {
+
         var title = element.querySelector('.title')
+
         var tabText = element.querySelector('.code-language').innerHTML
         
+        if (tabText == 'csharp') {
+          tabText = 'C#'
+        }
         var text = title ? title.innerHTML : tabText
-
+        
         var tabElement = createElement('li', 'tabbed-tab', [ document.createTextNode(tabText) ])
 
         element.dataset.title = text
