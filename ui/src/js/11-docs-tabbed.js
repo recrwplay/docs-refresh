@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Tabbed code
-  Array.from(document.querySelectorAll('.tabs, .tabbed-example'))
+  Array.from(document.querySelectorAll('.tabbed-example'))
     .forEach(function(tab) {
       var tabsTitle = tab.querySelector('.title')
       var originalTab = tab

@@ -51,6 +51,7 @@ section.deprecated .title::after {
 div.deprecated h2:after,
 div.deprecated h3:after,
 div.deprecated h4:after,
+div.deprecated dt:after,
 .doc.deprecated dt:after,
 p.deprecated::before,
 section.deprecated .title::after,
