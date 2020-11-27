@@ -146,18 +146,22 @@ body {
   margin-right: .5rem;
 }
 
-.doc a {
+.doc a,
+.doc p a code {
   color: var(--link-font-color);
 }
 
-.doc a:hover {
+.doc a:hover,
+.doc p a:hover code {
   color: var(--link_hover-font-color);
 }
-.doc a:visited {
+.doc a:visited
+.doc p a:visited code {
   color: var(--link_visited-font-color);
 }
 
-.doc a.unresolved {
+.doc a.unresolved
+.doc p a.unresolved code {
   color: var(--link_unresolved-font-color);
 }
 
@@ -602,6 +606,7 @@ body {
 .doc .olist .listingblock,
 .doc .admonitionblock .listingblock {
   padding: 0;
+  margin-top:0.25rem;
 }
 
 .doc .admonitionblock .title,
@@ -1068,9 +1073,14 @@ body {
   border-radius: .5rem;
   cursor: pointer;
 }
+
 .doc .tabbed-tabs .tabbed-tab--active {
   background: var(--colour-white);
   border-color: var(--colour-grey-300);
+}
+
+.doc .tabbed-tabs .tabbed-tab--dupe {
+  display: none;
 }
 
 .doc .tabbed-container {
